@@ -1,1 +1,26 @@
-{"dependencies":{"axios":"^1.7.7","colors":"^1.4.0","cors":"^2.8.5","express":"^4.21.0","fs":"^0.0.1-security","path":"^0.12.7","tokenizers":"^0.13.3"}}
+{
+  "name": "roomradar_cli",
+  "version": "1.0.0",
+  "description": "CLI for RoomRadar. Subproject of UniUtils",
+  "main": "roomradar/cli.js",
+  "scripts": {
+    "start": "cli"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YamanDevelopment/RoomRadar_CLI.git"
+  },
+  "author": "Jossaya Camille",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YamanDevelopment/RoomRadar_CLI/issues"
+  },
+  "homepage": "https://github.com/YamanDevelopment/RoomRadar_CLI#readme",
+  "dependencies": {
+    "cli-table3": "^0.6.5"
+  },
+  "bin": {
+    "roomradar": "./src/roomradar/cli.js"
+  }
+
+}
