@@ -43,7 +43,8 @@ const buildings = {
 	'PH': 'Parliament Hall',
 	'UN': 'Student Union',
 };
-const RoomRadar = (query) => {
+const RoomRadar = (query,...args) => {
+	if(args[0] == "codes") return buildings
 	const t = handleSearchQuery(query, {
 		data: JSON.parse(readFileSync(__dirname + "/../data/room_data.json")),
 		buildings: Object.values(buildings)

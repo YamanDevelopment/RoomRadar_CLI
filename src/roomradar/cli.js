@@ -8,20 +8,25 @@ let day = null;
 if (args.length == 0) {
     console.log("Welcome to RoomRadar!");
     console.log("Usage:");
-    console.log("  roomradar help                - Get an overview of the possible queries.");
+    console.log("  roomradar help                - Get an overview of the possible queries and how they should be formatted.");
     console.log("  roomradar \"Your Search Query\" - Pass in your search query to find a room or building.");
     process.exit(0);
 } else if (args[0] === 'help') {
     console.log("RoomRadar CLI Help:");
     console.log("  Pass in your search query as an argument to find a room or building.");
     console.log("  Example:");
-    console.log("    roomradar \"ED112\"");
-    console.log("    roomradar \"Engineering 1\"");
-    console.log("Your search query can contain a partial room number, partial building name, or a partial building name AND room number");
-    console.log("  Add the -s flag to view the schedules of the resulting rooms")
+    console.log("    roomradar \"ED112\" # returns College of Education Rm 112");
+    console.log("    roomradar \"Engineering 1 # returns all 1st floor rooms in any engineering building\"");
+    console.log("    roomradar \"ED1\" # Returns all rooms in College of Edu on first floor");
+    console.log("    roomradar \"Engineering East 2\" # returns all rooms in Engineering East on second floor");
+    console.log("  Your search query can contain a partial room number, partial building name, or a partial building name AND room number");
+    console.log("  Add the --schedule flag to view the schedules of the resulting rooms")
     console.log("  Example:");
-    console.log("     roomradar \"ED112\" -s")
-    console.log("     roomradar \"Engineering 102\" -s")
+    console.log("     roomradar \"ED112\" --schedule")
+    console.log("     roomradar \"Engineering 102\" --schedule")
+    console.log("  Pair the --day flag with the --schedule flag to find the schedules of the resulting rooms for days other than today.")
+    console.log("     roomradar \"ED112\" --schedule --day Tuesday")
+    console.log("     roomradar \"Engineering 102\" --schedule --day Tuesday")    
     process.exit(0);
 } else {
     let queries = [];
@@ -33,7 +38,10 @@ if (args.length == 0) {
             day = args.splice(i + 1, 1)[0]; // Remove the day argument and store it
             args.splice(i, 1); // Remove the flag itself
             i--; // Adjust the index to account for the removed element
-        } else if (!args[i].startsWith("-")) {
+        } else if (args[i] === "codes") {
+            console.log(RoomRadar(null,"codes"))
+        } 
+        else if (!args[i].startsWith("-")) {
             queries.push(args[i]);
         }
     }
