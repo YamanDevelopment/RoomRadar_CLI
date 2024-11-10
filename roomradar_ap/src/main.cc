@@ -1,6 +1,7 @@
 #include "../include/types.hh"
 
 int main(int argc, char* argv[]) {
+        Room room;
         if (argc < 2) {
                 show_help();
                 return 1;
@@ -11,13 +12,13 @@ int main(int argc, char* argv[]) {
                         std::cout << "Error: Room number not equipped with -s flag." << std::endl;
                         return 1;
                 }
-                Room::schedule(argv[2]);
+                room.schedule(argv[2]);
         }
         else if (strcmp(argv[1], "--help") == 0) {
                 show_more_help();
         }
         else {
-                room_status(argv[1]);
+                room.room_status(argv[1]);
         }
         return 0;
 }
