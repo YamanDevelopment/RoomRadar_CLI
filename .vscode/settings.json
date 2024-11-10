@@ -84,5 +84,6 @@
         "typeindex": "cpp",
         "valarray": "cpp",
         "variant": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/home/amarnath/Projects/RoomRadar_CLI/roomradar_ap"
 }

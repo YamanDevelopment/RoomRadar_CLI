@@ -4,6 +4,12 @@ using namespace roomradar;
 
 Room::Room() {
     // Initialize member variables
+    std::string Roomstr = "112";
+    std::string Building = "ED";
+    std::string Bldg_Room_3 = "ED112";
+    std::string Bldg_Room_2 = "ED11";
+    std::string Bldg_Room_1 = "ED1";
+
 }
 
 Room::~Room() {
