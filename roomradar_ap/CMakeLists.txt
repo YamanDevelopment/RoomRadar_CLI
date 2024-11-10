@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 add_executable(roomradar
     src/main.cc
+    src/help.cc
 )
