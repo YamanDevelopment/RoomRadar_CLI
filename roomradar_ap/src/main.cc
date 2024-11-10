@@ -1,5 +1,7 @@
 #include "../include/types.hh"
 
+using namespace roomradar;
+
 int main(int argc, char* argv[]) {
     Room room;
     if (argc < 2) {

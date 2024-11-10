@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <cstring>
 
+namespace roomradar {
+
 class Room {
         public:
                 std::string RoomStr; // the room code so like in ED112 the room code is 112
@@ -43,5 +45,6 @@ typedef enum {
 void show_help();
 void show_more_help();
 
+}
 
 #endif // TYPES_H

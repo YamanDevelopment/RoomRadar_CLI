@@ -1,5 +1,7 @@
 #include "../include/types.hh"
 
+using namespace roomradar;
+
 Room::Room() {
     // Initialize member variables
 }
