@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
                         std::cout << "Error: Room number not equipped with -s flag." << std::endl;
                         return 1;
                 }
-                schedule(argv[2]);
+                Room::schedule(argv[2]);
         }
         else if (strcmp(argv[1], "--help") == 0) {
                 show_more_help();
