@@ -7,6 +7,7 @@
 #include <map>
 //#include <nlohmann/json.hpp>
 #include <iomanip>
+#include <cstring>
 
 class Room {
         public:
