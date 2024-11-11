@@ -1,14 +1,14 @@
-#include "table.h"
+#include "table.hh"
 #include <iostream>
 #include <iomanip>
 
-// Define the functions as before\
+// Define the functions as before
 
 std::ostream& operator<<(std::ostream &o, const roomData data) {
     o << data.room_number << " |" << data.status << " |" << data.rating << (data.schedule == "" ? "" : data.schedule);
     return o; 
 }
-// ALL BELOW WAS WRITTEN BY MY BOY CHATGPT
+// ALL BELOW WAS WRITTEN BY MY BOY CHATGPT (except for like the params)
 void printRow(const std::vector<roomData>& rowData, int columnWidth) {
     std::cout << "|";
     for (const auto& item : rowData) {

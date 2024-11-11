@@ -4,14 +4,8 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include "../types/room.hh"
 
-class roomData {
-    std::string room_number;
-    std::string schedule;
-    std::string status;
-    int rating;
-    friend std::ostream& operator<<(std::ostream &o, const roomData data);
-};
 
 void printRow(const std::vector<roomData>& rowData, int columnWidth);
 void printSeparator(int numColumns, int columnWidth);

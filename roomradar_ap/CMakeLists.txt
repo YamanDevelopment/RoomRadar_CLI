@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.31.0)
 project(roomradar)
 
 # Force GCC
-set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_CXX_COMPILER g++ FORCE)
 
 # Set C++23 standard
 set(CMAKE_CXX_STANDARD 23)
