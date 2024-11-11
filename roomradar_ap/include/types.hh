@@ -5,9 +5,10 @@
 #include <string>
 #include <vector>
 #include <map>
-//#include <nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
 #include <iomanip>
 #include <cstring>
+#include <fstream>
 
 namespace roomradar {
 
@@ -21,6 +22,8 @@ class Room {
 
                 Room();
                 ~Room();
+
+                int parse_json();
 
                 // For basic schedule lookup: schedule("ED112")
                 std::string schedule(std::string room_code);
