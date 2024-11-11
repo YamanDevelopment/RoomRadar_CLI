@@ -3,7 +3,7 @@
 using namespace roomradar;
 
 Room::Room() {
-    // Initialize member variables
+    // Initialize member variables (its just place holder)
     std::string Roomstr = "112";
     std::string Building = "ED";
     std::string Bldg_Room_3 = "ED112";
