@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <cstring>
 #include <fstream>
+#include <sstream>
 
 namespace roomradar {
 
@@ -25,14 +26,17 @@ class Room {
 
                 int parse_json();
 
-                // For basic schedule lookup: schedule("ED112")
-                std::string schedule(std::string room_code);
+                // Basic schedule lookup
+                 std::string schedule(std::string room_code);
         
-                // For day-specific schedule: schedule("ED112", "Monday")
+                 // Day-specific schedule lookup
                 std::string schedule(std::string room_code, std::string weekday);
         
                 // For current room status: room_status("ED112")
                 std::string room_status(std::string room_code);
+
+                void show_help();
+                void show_more_help();
 };
 
 typedef enum {
@@ -44,9 +48,6 @@ typedef enum {
         SATURDAY,
         SUNDAY
 } Day;
-
-void show_help();
-void show_more_help();
 
 }
 

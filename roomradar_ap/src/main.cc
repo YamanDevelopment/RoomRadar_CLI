@@ -5,7 +5,7 @@ using namespace roomradar;
 int main(int argc, char* argv[]) {
     Room room;
     if (argc < 2) {
-        show_help();
+        room.show_help();
         return 1;
     }
 
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (strcmp(argv[1], "help") == 0) {
-        show_more_help();
+        room.show_more_help();
     }
     else {
         room.room_status(argv[1]);
