@@ -3,32 +3,39 @@
 using namespace roomradar;
 
 int main(int argc, char* argv[]) {
-    Room room;
-    if (argc < 2) {
-        room.show_help();
-        return 1;
-    }
-
-    if (strcmp(argv[1], "schedule") == 0) {
-        if (argc < 3) {
-            std::cout << "Error: Room number not equipped with schedule flag." << std::endl;
+        Room room;
+        if (argc < 2) {
+            room.show_help();
             return 1;
         }
+
+        std::string result; // Store function return values
+
+        if (strcmp(argv[1], "schedule") == 0) {
+            if (argc < 3) {
+                std::cout << "Error: Room number required." << std::endl;
+                return 1;
+            }
         
-        // Check for optional day parameter
-        if (argc >= 5 && strcmp(argv[2], "day") == 0) {
-            // Format: schedule day WEEKDAY ROOM
-            room.schedule(argv[4], argv[3]); // Pass both room and day
+            if (argc >= 5 && strcmp(argv[2], "day") == 0) {
+                // Format: schedule day WEEKDAY ROOM
+                std::string room_code(argv[4]);
+                std::string weekday(argv[3]);
+                result = room.schedule(room_code, weekday);
         } else {
             // Format: schedule ROOM
-            room.schedule(argv[2]); // Original behavior
+            std::string room_code(argv[2]);
+            result = room.schedule(room_code);
         }
-    }
-    else if (strcmp(argv[1], "help") == 0) {
-        room.show_more_help();
-    }
-    else {
-        room.room_status(argv[1]);
-    }
-    return 0;
+        std::cout << result; // Print schedule result
+        }
+        else if (strcmp(argv[1], "help") == 0) {
+            room.show_more_help();
+        }
+        else {
+            std::string room_code(argv[1]);
+            result = room.room_status(room_code);
+            std::cout << result;
+        }
+        return 0;
 }

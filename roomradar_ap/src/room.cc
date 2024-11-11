@@ -82,8 +82,25 @@ std::string Room::schedule(std::string room_code, std::string weekday) {
 }
 
 std::string Room::room_status(std::string room_code) {
-        // Implement room status lookup
-        return "";
+    try {
+        std::ifstream f("room_data.json");
+        nlohmann::json data = nlohmann::json::parse(f);
+        f.close();
+
+        nlohmann::json room = data[room_code];
+        if (room.is_null()) {
+            return "Room not found.";
+        }
+
+        std::stringstream output;
+        output << "Current status for " << room_code << ":\n";
+        output << "Type: " << room["RoomType"] << "\n";
+        output << "Capacity: " << room["StudentCapacity"] << "\n";
+        return output.str();
+    }
+    catch (const nlohmann::json::exception& e) {
+        return "Error reading room status: " + std::string(e.what());
+    }
 }
 
 int Room::parse_json() {
