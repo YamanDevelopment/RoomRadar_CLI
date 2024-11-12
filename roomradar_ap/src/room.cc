@@ -110,57 +110,59 @@ std::string Room::room_status(std::string room_code) {
         nlohmann::json data = nlohmann::json::parse(f);
         f.close();
 
-        nlohmann::json room = data[room_code];
-        if (room.is_null()) {
-            return "Room not found.";
-        }
-
-        // Get current time and day
-        auto now = std::chrono::system_clock::now();
-        std::time_t now_c = std::chrono::system_clock::to_time_t(now);
-        std::tm local_time = *std::localtime(&now_c);
-        
-        std::string days_of_week[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-        std::string today = days_of_week[local_time.tm_wday];
-
-        // Format current time as HH:MM
-        std::stringstream current_time;
-        current_time << std::setfill('0') << std::setw(2) << local_time.tm_hour << ":"
-                    << std::setfill('0') << std::setw(2) << local_time.tm_min;
-
         std::stringstream output;
-        output << "Status for " << room_code << ":\n";
-        output << "Building: " << room["Building"] << "\n";
-        output << "Type: " << room["RoomType"] << "\n";
-        output << "Capacity: " << room["StudentCapacity"] << "\n";
-        output << "Features:\n";
-        output << "  - Zoom Enabled: " << (room["ZoomEnabled"] ? "Yes" : "No") << "\n";
-        output << "  - Video Conference: " << (room["VideoConf"] ? "Yes" : "No") << "\n";
-        output << "  - Mediasite: " << (room["Mediasite"] ? "Yes" : "No") << "\n";
+        bool found = false;
 
-        // Check current availability
-        bool is_available = true;
-        std::string next_class = "No more classes today";
-        
-        if (room["schedule"].contains(today)) {
-            for (const auto& time : room["schedule"][today]) {
-                std::string start = time["start"];
-                std::string end = time["end"];
+        // Iterate through all rooms to find matches
+        for (const auto& [key, value] : data.items()) {
+            if (key.find(room_code) == 0) { // Check if key starts with room_code
+                found = true;
+                // Get current time and day
+                auto now = std::chrono::system_clock::now();
+                std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+                std::tm local_time = *std::localtime(&now_c);
                 
-                if (current_time.str() >= start && current_time.str() <= end) {
-                    is_available = false;
-                    output << "\nCurrently: In Use (Class until " << end << ")\n";
-                    break;
-                } else if (current_time.str() < start) {
-                    next_class = "Next class at " + start;
-                    break;
+                std::string days_of_week[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+                std::string today = days_of_week[local_time.tm_wday];
+
+                // Format current time as HH:MM
+                std::stringstream current_time;
+                current_time << std::setfill('0') << std::setw(2) << local_time.tm_hour << ":"
+                            << std::setfill('0') << std::setw(2) << local_time.tm_min;
+
+                bool is_available = true;
+                std::string next_class = "No more classes today";
+                
+                output << "\n" << key << ": ";
+                
+                if (value["schedule"].contains(today)) {
+                    for (const auto& time : value["schedule"][today]) {
+                        std::string start = time["start"];
+                        std::string end = time["end"];
+                        
+                        if (current_time.str() >= start && current_time.str() <= end) {
+                            is_available = false;
+                            output << "In Use until " << end;
+                            break;
+                        } else if (current_time.str() < start) {
+                            next_class = start;
+                            break;
+                        }
+                    }
                 }
+                
+                if (is_available) {
+                    output << "Available";
+                    if (next_class != "No more classes today") {
+                        output << ", Next class at " << next_class;
+                    }
+                }
+                output << "\n";
             }
         }
-        
-        if (is_available) {
-            output << "\nCurrently: Available\n";
-            output << next_class << "\n";
+
+        if (!found) {
+            return "No rooms found matching " + room_code;
         }
 
         return output.str();
@@ -169,4 +171,3 @@ std::string Room::room_status(std::string room_code) {
         return "Error reading room status: " + std::string(e.what());
     }
 }
-
