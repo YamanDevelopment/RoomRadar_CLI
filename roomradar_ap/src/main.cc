@@ -29,6 +29,15 @@ int main(int argc, char* argv[]) {
         }
         std::cout << result; // Print schedule result
         }
+        else if (strcmp(argv[1], "status") == 0) {
+            if (argc < 3) {
+                std::cout << "Error: Room number required." << std::endl;
+                return 1;
+            }
+            std::string room_code(argv[2]);
+            result = room.room_status(room_code);
+            std::cout << result;
+        }
         else if (strcmp(argv[1], "help") == 0) {
             room.show_more_help();
         }
