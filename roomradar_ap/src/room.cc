@@ -11,7 +11,6 @@ Room::Room() {
         std::string Bldg_Room_3 = "ED112";
         std::string Bldg_Room_2 = "ED11";
         std::string Bldg_Room_1 = "ED1";
-        parse_json();
 }
 
 Room::~Room() {
@@ -21,10 +20,10 @@ Room::~Room() {
 // function overloading be like
 
 std::string Room::schedule(std::string room_code) {
-        try {
-                std::ifstream f("room_data.json");
-                nlohmann::json data = nlohmann::json::parse(f);
-                f.close();
+    try {
+        std::ifstream f("room_data.json");
+        nlohmann::json data = nlohmann::json::parse(f);
+        f.close();
 
         nlohmann::json room = data[room_code];
         std::stringstream output;
@@ -34,21 +33,33 @@ std::string Room::schedule(std::string room_code) {
         }
 
         nlohmann::json schedule = room["schedule"];
-        output << "Full schedule for " << room_code << ":\n";
+        output << "Schedule for " << room_code << ":\n";
+
+        // Get the current day of the week as a string
+        auto now = std::chrono::system_clock::now();
+        std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+        std::tm local_time = *std::localtime(&now_c);
         
-        for (const auto& [day, times] : schedule.items()) {
-                output << day << ":\n";
-                for (const auto& time : times) {
+        std::string days_of_week[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        std::string today = days_of_week[local_time.tm_wday];
+
+        // Check if today exists in the schedule
+        if (schedule.contains(today)) {
+            output << today << ":\n";
+            for (const auto& time : schedule[today]) {
                 output << "  " << time["start"] << " - " << time["end"] << "\n";
             }
+        } else {
+            output << "No classes scheduled for today (" << today << ").\n";
         }
 
         return output.str();
     }
-        catch (const nlohmann::json::exception& e) {
-                return "Error reading schedule: " + std::string(e.what());
+    catch (const nlohmann::json::exception& e) {
+        return "Error reading schedule: " + std::string(e.what());
     }
 }
+
 
 std::string Room::schedule(std::string room_code, std::string weekday) {
         try {
@@ -103,9 +114,3 @@ std::string Room::room_status(std::string room_code) {
     }
 }
 
-int Room::parse_json() {
-        std::ifstream f("room_data.json");
-        json data = json::parse(f);
-        f.close();
-        return 0;
-}

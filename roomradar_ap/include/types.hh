@@ -10,6 +10,9 @@
 #include <cstring>
 #include <fstream>
 #include <sstream>
+#include <chrono>
+#include <ctime>
+
 
 namespace roomradar {
 
@@ -23,8 +26,6 @@ class Room {
 
                 Room();
                 ~Room();
-
-                int parse_json();
 
                 // Basic schedule lookup
                  std::string schedule(std::string room_code);
