@@ -3,8 +3,24 @@
 const path = require('path');
 const { RoomRadar } = require(path.resolve(__dirname, './radar'));
 const Table = require('cli-table3');
+const { readFileSync, writeFileSync, write } = require('fs');
+const {getSemesterData} = require('./update_data');
 const [,, ...args] = process.argv
 let day = null;
+
+const date = new Date();
+const month = date.getMonth() + 1;
+const t = date.getDate();
+const year = date.getFullYear();
+const semester = readFileSync("semester.txt","utf8")
+// Check if the semester has changed
+const current_semester = String(year) + ((month >= 1 && month < 5) ? '01' : month >= 5 && month < 8 ? '05' : '08');
+if(current_semester != semester || args.includes("--update") || args.includes("-u")) {
+    console.log("New semester detected (or update flag given). Updating semester file...");
+    writeFileSync("semester.txt",current_semester,"utf8");
+    await getSemesterData(current_semester);
+}
+
 if (args.length == 0) {
     console.log("Welcome to RoomRadar!");
     console.log("Usage:");

@@ -15,9 +15,10 @@ function formatTime12Hour(timeStr) {
 }
 
 
-async function formatClassrooms() {
+async function formatClassrooms(fname) {
   try {
-    const rawjson = await fsp.readFile(`202408.json`, 'utf-8');
+    console.log("Parsing semester data...")
+    const rawjson = await fsp.readFile(fname, 'utf-8');
     const json = JSON.parse(rawjson);
     const classroomSchedule = {}; 
 
@@ -65,7 +66,7 @@ async function formatClassrooms() {
         });
       }
     }
-    const rd_rawjson = await JSON.parse(await fsp.readFile("./room_data.json",'utf-8'));
+    const rd_rawjson = await JSON.parse(await fsp.readFile("../data/room_data.json",'utf-8'));
     let keys = Object.keys(rd_rawjson);
     keys.forEach(key => rd_rawjson[key].schedule = {})
     keys = Object.keys(classroomSchedule);
@@ -74,17 +75,13 @@ async function formatClassrooms() {
         if(rd_rawjson[key].schedule) rd_rawjson[key].schedule = classroomSchedule[key];
       } 
     })
-    fsp.writeFile("./room_data.json",JSON.stringify(rd_rawjson));
-    console.log(classroomSchedule["ED111"])
+    fsp.writeFile("../data/room_data.json",JSON.stringify(rd_rawjson));
     }catch(error) {
         console.error(error)
     }
-    
-   
-    
 
+    console.log("Semester data parsed!")
 }
 
-formatClassrooms();
 
 module.exports = { formatClassrooms }
