@@ -1,7 +1,8 @@
-const {formatClassrooms} = require('./parse.js');
-const {scrapeAll} = require("./scrape.js")
-async function getSemesterData(semester) {
-    const prompt = require("prompt-sync")({ sigint: true });
+import { formatClassrooms } from './parse.js';
+import { scrapeAll } from './scrape.js';
+import promptSync from 'prompt-sync';
+const prompt = promptSync({ sigint: true });
+export async function getSemesterData(semester) {
     let JSESSIONID = prompt("JSESSIONID: ");
     let SSBPool = prompt("BIGipServerboc22banxe_faup_StuRegSsb_pool (Default - 540087050.10275.0000): ");
     if (SSBPool == ""){ SSBPool = "540087050.10275.0000" }
@@ -9,6 +10,3 @@ async function getSemesterData(semester) {
     formatClassrooms(path)
     console.log("RoomRadar succesfully updated!")
 }
-
-
-module.exports = { getSemesterData }

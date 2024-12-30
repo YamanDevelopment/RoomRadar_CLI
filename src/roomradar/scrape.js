@@ -1,19 +1,22 @@
 //Setup
-const cliProgress = require('cli-progress');
-const puppeteer = require('puppeteer');
-const fs = require('fs').promises;
-
+import cliProgress from 'cli-progress';
+import puppeteer from 'puppeteer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { promises as fs } from 'fs';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 //Function to scrape info w/ puppeteer
-async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb_pool, termIDs){
+export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb_pool, termIDs){
     const progress = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
     const browser = await puppeteer.launch( { headless: true });
     const page = await browser.newPage();
-    const cookiesString = await fs.readFile('./assets/cookie.json');
+    const cookiesString = await fs.readFile(path.join(__dirname,'../data/cookie.json'));
     const cookies = JSON.parse(cookiesString);
     cookies[0].value = JSESSIONID;
     cookies[1].value = BIGipServerboc22banxe_faup_StuRegSsb_pool;
 
-    let path;
+    let n_path;
 
     await page.setCookie(...cookies);
     for(let i = 0; i < termIDs.length; i++){
@@ -79,14 +82,12 @@ async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb_pool, 
             }
             progress.update(num/205);
         }
-        fs.appendFile(`../data/${termIDs[i]}.json`, (JSON.stringify(alldata, null, 4)));
-        path = `../data/${termIDs[i]}.json`
+        fs.writeFile(path.join(__dirname,`../data/${termIDs[i]}.json`), JSON.stringify(alldata, null, 4));
+        n_path = path.join(__dirname,`../data/${termIDs[i]}.json`)
         progress.stop();
     }
     await browser.close();
 
     console.log('\n\nSemester data scraped...\n');
-    return path
+    return n_path
 }
-
-module.exports = { scrapeAll }

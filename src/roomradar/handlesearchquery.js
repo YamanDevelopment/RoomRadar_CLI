@@ -1,5 +1,5 @@
-const assert = require('node:assert').strict;
-function handleSearchQuery(query, config) {
+import { strict as assert } from 'node:assert';
+export function handleSearchQuery(query, config) {
     try {
         assert(config.data);
         assert(config.buildings && Array.isArray(config.buildings));
@@ -71,4 +71,3 @@ const CheckRoom = (query, room) => {
         return CheckNum(num,room.Room)
     }
 }
-module.exports = {handleSearchQuery}

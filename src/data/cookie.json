@@ -1,0 +1,20 @@
+[
+    {
+      "name": "JSESSIONID",
+      "value": "",
+      "domain": "bannerxe.fau.edu",
+      "path": "/StudentRegistrationSsb",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true
+    },
+    {
+      "name": "BIGipServerboc22banxe_faup_StuRegSsb_pool",
+      "value": "",
+      "domain": "bannerxe.fau.edu",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true
+    }
+  ]

@@ -1,6 +1,10 @@
-const { start } = require("repl");
-
-const fsp = require("fs").promises;
+import { start } from "repl";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import {default as fsWithCallbacks} from 'fs'
+const fsp = fsWithCallbacks.promises
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 function formatTime12Hour(timeStr) {
@@ -15,7 +19,7 @@ function formatTime12Hour(timeStr) {
 }
 
 
-async function formatClassrooms(fname) {
+export async function formatClassrooms(fname) {
   try {
     console.log("Parsing semester data...")
     const rawjson = await fsp.readFile(fname, 'utf-8');
@@ -66,7 +70,7 @@ async function formatClassrooms(fname) {
         });
       }
     }
-    const rd_rawjson = await JSON.parse(await fsp.readFile("../data/room_data.json",'utf-8'));
+    const rd_rawjson = await JSON.parse(await fsp.readFile(path.join(__dirname,"../data/room_data.json"),'utf-8'));
     let keys = Object.keys(rd_rawjson);
     keys.forEach(key => rd_rawjson[key].schedule = {})
     keys = Object.keys(classroomSchedule);
@@ -75,13 +79,10 @@ async function formatClassrooms(fname) {
         if(rd_rawjson[key].schedule) rd_rawjson[key].schedule = classroomSchedule[key];
       } 
     })
-    fsp.writeFile("../data/room_data.json",JSON.stringify(rd_rawjson));
+    fsp.writeFile(path.join(__dirname,"../data/room_data.json"),JSON.stringify(rd_rawjson));
     }catch(error) {
         console.error(error)
     }
 
     console.log("Semester data parsed!")
 }
-
-
-module.exports = { formatClassrooms }

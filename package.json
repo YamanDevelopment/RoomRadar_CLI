@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "CLI for RoomRadar. Subproject of UniUtils",
   "main": "roomradar/cli.js",
+  "type": "module",
   "scripts": {
     "start": "cli"
   },
@@ -17,10 +18,12 @@
   },
   "homepage": "https://github.com/YamanDevelopment/RoomRadar_CLI#readme",
   "dependencies": {
-    "cli-table3": "^0.6.5"
+    "cli-progress": "^3.12.0",
+    "cli-table3": "^0.6.5",
+    "prompt-sync": "^4.2.0",
+    "puppeteer": "^23.11.1"
   },
   "bin": {
     "roomradar": "./src/roomradar/cli.js"
   }
-
 }

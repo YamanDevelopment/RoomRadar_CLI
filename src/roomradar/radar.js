@@ -1,6 +1,6 @@
 // this file handles building abbreviations, sorting, ratings, etc, and formats the object
-const {handleSearchQuery} = require("./handlesearchquery")
-const { readFileSync } = require("node:fs");
+import {handleSearchQuery} from "./handlesearchquery.js";
+import { readFileSync } from "node:fs";
 const buildings = {
 	'IN-1': 'Innovation Centre Bldg. 1',
 	'IN-2': 'Innovation Centre Bldg. 2',
@@ -43,7 +43,7 @@ const buildings = {
 	'PH': 'Parliament Hall',
 	'UN': 'Student Union',
 };
-const RoomRadar = (query,...args) => {
+export const RoomRadar = (query,...args) => {
 	if(args[0] == "codes") return buildings
 	const t = handleSearchQuery(query, {
 		data: JSON.parse(readFileSync(__dirname + "/../data/room_data.json")),
@@ -107,6 +107,5 @@ const getTimeString = (e) => {
 	let hours = t > 12 ? t - 12 : t;
 	return hours + ":" + (Math.ceil((e - t)*60) > 9 ? Math.ceil((e - t)*60) : "0" + Math.ceil((e - t)*60)) + (t < 12 ? "AM" : "PM");
 }
-module.exports = {RoomRadar}
 
 
