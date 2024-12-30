@@ -1,6 +1,10 @@
 // this file handles building abbreviations, sorting, ratings, etc, and formats the object
 import {handleSearchQuery} from "./handlesearchquery.js";
 import { readFileSync } from "node:fs";
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const buildings = {
 	'IN-1': 'Innovation Centre Bldg. 1',
 	'IN-2': 'Innovation Centre Bldg. 2',

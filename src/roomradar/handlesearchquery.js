@@ -30,7 +30,7 @@ export function handleSearchQuery(query, config) {
     if(results.rooms.length > 0) return results.rooms
     else {
         let fResults = [];
-        if(results.buildings.length > 0) for(bldg of results.buildings) fResults = fResults.concat(rooms.filter(room => room.Building == bldg))
+        if(results.buildings.length > 0) for(let bldg of results.buildings) fResults = fResults.concat(rooms.filter(room => room.Building == bldg))
         if(results.roomNumbers.length > 0)
             for(num of results.roomNumbers) fResults.some(room => room.Number == num) ? null : fResults.push(config.data[num]);
             
@@ -41,7 +41,7 @@ export function handleSearchQuery(query, config) {
  // convert the query to standard case (capitalize each word)
  const getStdCase = (query) => {
     query = query.split(" ");
-    for(word in query) {
+    for(let word in query) {
         query[word] = query[word].split("");
         let letter = query[word][0];
         query[word].splice(0, 1,letter.toUpperCase());
@@ -53,7 +53,7 @@ export function handleSearchQuery(query, config) {
 const CheckNum = (query, num) => {
     query = query.split("");
     num = num.split("")
-    for(i in query) if(query[i].toUpperCase() != num[i]) return false
+    for(let i in query) if(query[i].toUpperCase() != num[i]) return false
     return true
 } 
 const CheckRoom = (query, room) => {

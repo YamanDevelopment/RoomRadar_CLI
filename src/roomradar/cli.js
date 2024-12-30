@@ -1,12 +1,10 @@
 #!/usr/bin/env node
-
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { RoomRadar } from './radar.js';
 import Table from 'cli-table3';
 import { readFileSync, writeFileSync } from 'fs';
 import { getSemesterData } from './update_data.js';
-
+import path from 'path';
+import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const [,, ...args] = process.argv;
@@ -66,12 +64,12 @@ if (args.length == 0) {
         }
     }
     if(!schedule_bool) {
-        for(query of queries) {
+        for(let query of queries) {
             console.log(`Search query ${query}:`);
             displayTable(RoomRadar(query));
         }
     } else {
-        for(query of queries) {
+        for(let query of queries) {
             console.log(`Search query ${query}:`);
             displayScheduleTable(RoomRadar(query));
         }
@@ -84,7 +82,7 @@ function displayTable(data) {
         head: ['Room number', 'Type','Status', 'Rating'],
         colWidths: [15, 20, 25, 12]
     });
-    for(room of data) table.push([room.Number, room.RoomType ,room.status, generateRatingScale(room)])
+    for(let room of data) table.push([room.Number, room.RoomType ,room.status, generateRatingScale(room)])
 
     console.log(table.toString());
 }
