@@ -93,11 +93,11 @@ function displayScheduleTable(data) {
         colWidths: [15, 40]
     });
     
-    for(room of data) {
+    for(const room of data) {
         if(room.schedule) {
             if(Object.keys(room.schedule).includes(getDay())) {
                 room.schedule_string = ""
-                for(course of room.schedule[getDay()]) {
+                for(const course of room.schedule[getDay()]) {
                     room.schedule_string += course.start + " to " + course.end + "\n"
                 }
                 table.push([room.Number,room.schedule_string, generateRatingScale(room)]);
@@ -116,7 +116,7 @@ function generateRatingScale(room) {
     let rating;
     if(room.schedule) {
         if(Object.keys(room.schedule).includes(getDay())) {
-            for(course of room.schedule[getDay()]) {
+            for(let course of room.schedule[getDay()]) {
                 if(room.timing) gap -= (course.timing.end - course.timing.start);
                 else break;
             }

@@ -20,14 +20,27 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
 
     await page.setCookie(...cookies);
     for(let i = 0; i < termIDs.length; i++){
+        fs.writeFile(path.join(__dirname,`../data/${termIDs[i]}.json`), "");
         console.log(` Scraping term ${termIDs[i]}\n`);
-        progress.start(25,0);
+        
         let alldata = {
             data: []
         };
-        //5125
-        for (let num=0;num<=5125;num+=205){
-            await page.goto(`https://bannerxe.fau.edu/StudentRegistrationSsb/ssb/searchResults/searchResults?txt_term=${termIDs[i]}&startDatepicker=&endDatepicker=&uniqueSessionId=&pageOffset=${ num }&pageMaxSize=205&sortColumn=subjectDescription&sortDirection=asc`);
+        //get total count
+        await page.goto(`https://bannerxe.fau.edu/StudentRegistrationSsb/ssb/searchResults/searchResults?txt_term=${termIDs[i]}&startDatepicker=&endDatepicker=&pageOffset=0&pageMaxSize=50&sortColumn=subjectDescription&sortDirection=asc`);
+        const data = await page.evaluate( () => {
+            const spans = Array.from(document.querySelectorAll('pre'));
+            console.log(spans)
+            const urls = spans.map(span => span.innerHTML);
+            console.log(typeof urls);
+            return urls
+        }); 
+        const max_size = JSON.parse(data).totalCount;
+        let remaining = max_size % 500
+        let completed = max_size;
+        progress.start(max_size,0);
+        for (let num=0;num<max_size;){
+            await page.goto(`https://bannerxe.fau.edu/StudentRegistrationSsb/ssb/searchResults/searchResults?txt_term=${termIDs[i]}&startDatepicker=&endDatepicker=&pageOffset=${num}&pageMaxSize=${max_size}&sortColumn=subjectDescription&sortDirection=asc`);
             const data = await page.evaluate( () => {
                 const spans = Array.from(document.querySelectorAll('pre'));
                 console.log(spans)
@@ -36,7 +49,6 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
                 return urls
             }); 
             let dataJson = (JSON.parse(data)).data;
-
             for(let i = 0; i < Object.keys(dataJson).length; i++){
                 try{
                     for(let j = 0; j < Object.keys(dataJson[i].faculty).length; j++){
@@ -80,9 +92,11 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
                 }
                 alldata.data.push(dataJson[i]);
             }
-            progress.update(num/205);
+            if(completed - num > remaining) num += 500;
+            else num += remaining
+            progress.update(num);
         }
-        fs.writeFile(path.join(__dirname,`../data/${termIDs[i]}.json`), JSON.stringify(alldata, null, 4));
+        fs.appendFile(path.join(__dirname,`../data/${termIDs[i]}.json`), JSON.stringify(alldata, null, 4));
         n_path = path.join(__dirname,`../data/${termIDs[i]}.json`)
         progress.stop();
     }

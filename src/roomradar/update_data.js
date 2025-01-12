@@ -7,6 +7,6 @@ export async function getSemesterData(semester) {
     let SSBPool = prompt("BIGipServerboc22banxe_faup_StuRegSsb_pool (Default - 540087050.10275.0000): ");
     if (SSBPool == ""){ SSBPool = "540087050.10275.0000" }
     let path = await scrapeAll(JSESSIONID,SSBPool,[semester])
-    formatClassrooms(path)
+    await formatClassrooms(path)
     console.log("RoomRadar succesfully updated!")
 }

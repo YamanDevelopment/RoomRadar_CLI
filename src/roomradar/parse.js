@@ -57,6 +57,7 @@ export async function formatClassrooms(fname) {
         }
 
         const times = `${formatTime12Hour(startTime)} - ${formatTime12Hour(endTime)}`;
+        console.log(times);
         days.forEach((day) => {
           if (meeting[day.toLowerCase()] && !classroomSchedule[location][day].includes(times)) {
             if(startTime && endTime) {
@@ -79,10 +80,11 @@ export async function formatClassrooms(fname) {
         if(rd_rawjson[key].schedule) rd_rawjson[key].schedule = classroomSchedule[key];
       } 
     })
-    fsp.writeFile(path.join(__dirname,"../data/room_data.json"),JSON.stringify(rd_rawjson));
+    await fsp.writeFile(path.join(__dirname,"../data/room_data.json"),JSON.stringify(rd_rawjson,null,4));
+    console.log("Semester data parsed!")
     }catch(error) {
         console.error(error)
     }
 
-    console.log("Semester data parsed!")
+    
 }
