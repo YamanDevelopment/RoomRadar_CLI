@@ -32,7 +32,7 @@ export function handleSearchQuery(query, config) {
         let fResults = [];
         if(results.buildings.length > 0) for(let bldg of results.buildings) fResults = fResults.concat(rooms.filter(room => room.Building == bldg))
         if(results.roomNumbers.length > 0)
-            for(num of results.roomNumbers) fResults.some(room => room.Number == num) ? null : fResults.push(config.data[num]);
+            for(const num of results.roomNumbers) fResults.some(room => room.Number == num) ? null : fResults.push(config.data[num]);
             
         return fResults;
     }

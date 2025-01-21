@@ -20,7 +20,7 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
 
     await page.setCookie(...cookies);
     for(let i = 0; i < termIDs.length; i++){
-        fs.writeFile(path.join(__dirname,`../data/${termIDs[i]}.json`), "");
+        fs.writeFile(path.join(__dirname,`../data/${termIDs[i]}.data.json`), "");
         console.log(` Scraping term ${termIDs[i]}\n`);
         
         let alldata = {
@@ -30,9 +30,7 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
         await page.goto(`https://bannerxe.fau.edu/StudentRegistrationSsb/ssb/searchResults/searchResults?txt_term=${termIDs[i]}&startDatepicker=&endDatepicker=&pageOffset=0&pageMaxSize=50&sortColumn=subjectDescription&sortDirection=asc`);
         const data = await page.evaluate( () => {
             const spans = Array.from(document.querySelectorAll('pre'));
-            console.log(spans)
             const urls = spans.map(span => span.innerHTML);
-            console.log(typeof urls);
             return urls
         }); 
         const max_size = JSON.parse(data).totalCount;
@@ -43,9 +41,7 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
             await page.goto(`https://bannerxe.fau.edu/StudentRegistrationSsb/ssb/searchResults/searchResults?txt_term=${termIDs[i]}&startDatepicker=&endDatepicker=&pageOffset=${num}&pageMaxSize=${max_size}&sortColumn=subjectDescription&sortDirection=asc`);
             const data = await page.evaluate( () => {
                 const spans = Array.from(document.querySelectorAll('pre'));
-                console.log(spans)
                 const urls = spans.map(span => span.innerHTML);
-                console.log(typeof urls);
                 return urls
             }); 
             let dataJson = (JSON.parse(data)).data;
@@ -96,8 +92,8 @@ export async function scrapeAll(JSESSIONID, BIGipServerboc22banxe_faup_StuRegSsb
             else num += remaining
             progress.update(num);
         }
-        fs.appendFile(path.join(__dirname,`../data/${termIDs[i]}.json`), JSON.stringify(alldata, null, 4));
-        n_path = path.join(__dirname,`../data/${termIDs[i]}.json`)
+        fs.appendFile(path.join(__dirname,`../data/${termIDs[i]}.data.json`), JSON.stringify(alldata, null, 4));
+        n_path = path.join(__dirname,`../data/${termIDs[i]}.data.json`)
         progress.stop();
     }
     await browser.close();

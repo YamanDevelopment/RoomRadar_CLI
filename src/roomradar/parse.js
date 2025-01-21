@@ -57,7 +57,6 @@ export async function formatClassrooms(fname) {
         }
 
         const times = `${formatTime12Hour(startTime)} - ${formatTime12Hour(endTime)}`;
-        console.log(times);
         days.forEach((day) => {
           if (meeting[day.toLowerCase()] && !classroomSchedule[location][day].includes(times)) {
             if(startTime && endTime) {

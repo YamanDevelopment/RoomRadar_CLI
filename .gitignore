@@ -140,3 +140,5 @@ dist
 
 
 suite360/
+*.data.json
+src/roomradar/semester.txt
