@@ -14,14 +14,22 @@ const date = new Date();
 const month = date.getMonth() + 1;
 const t = date.getDate();
 const year = date.getFullYear();
-const semester = readFileSync(path.join(__dirname,"/semester.txt"),"utf8")
-// Check if the semester has changed
+let semester;
 const current_semester = String(year) + ((month >= 1 && month < 5) ? '01' : month >= 5 && month < 8 ? '05' : '08');
-if(current_semester != semester || args.includes("--update") || args.includes("-u")) {
-    console.log("New semester detected (or update flag given). Updating semester file...");
+if(existsSync(path.join(__dirname,"/semester.txt"))) {
+    semester = readFileSync(path.join(__dirname,"/semester.txt"),"utf8")
+    if(current_semester != semester || args.includes("--update") || args.includes("-u")) {
+        console.log("New semester detected (or update flag given). Updating semester file...");
+        writeFileSync(path.join(__dirname,"/semester.txt"),current_semester,"utf8");
+        await getSemesterData(current_semester);
+    }
+} else {
+    console.log("Conducting first time setup..")
     writeFileSync(path.join(__dirname,"/semester.txt"),current_semester,"utf8");
     await getSemesterData(current_semester);
 }
+// Check if the semester has changed
+
 
 if (args.length == 0) {
     console.log("Welcome to RoomRadar!");
