@@ -5,7 +5,7 @@
   "main": "roomradar/cli.js",
   "type": "module",
   "scripts": {
-    "start": "cli",
+    "start": "cli"
   },
   "repository": {
     "type": "git",
