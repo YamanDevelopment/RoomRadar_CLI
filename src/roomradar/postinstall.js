@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { getSemesterData } from "./update_data"
 
 console.log("Conducting initial setup..")
