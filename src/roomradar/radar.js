@@ -1,6 +1,6 @@
 // this file handles building abbreviations, sorting, ratings, etc, and formats the object
 import {handleSearchQuery} from "./handlesearchquery.js";
-import { readFileSync } from "node:fs";
+import { readFileSync, stat } from "node:fs";
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
@@ -82,23 +82,33 @@ export const RoomRadar = (query,...args) => {
 				return 0;
 			}
 		});
-		let status_set;
-		r.schedule[weekdays[date.getDay()]].forEach(e => {
-			if(time > e.timing.start && e.timing.end > time) {
-				let timeString = getTimeString(e.timing.end)
-				r.status = "Unavailable until " + timeString
-				status_set = true;
-			} else if (time < e.timing.start && !status_set) {
+		// get room schedule for the day
+		let arr = r.schedule[weekdays[date.getDay()]]
+		for(let i = 0; i < arr.length; i++) {
+			let e = arr[i] // e -> the ith class of the day in that room
+			if(time > e.timing.start && e.timing.end > time) { // Class in progress condition
+				let e_1 = arr[i+1];
+				if(e_1 == null) { // if the room doesn't have a class afterward
+					let timeString = getTimeString(e.timing.end)
+					r.status = "Unavailable until " + timeString
+					break
+				} else if(Math.abs(e.timing.end - e_1.timing.start) <= 15/60) {
+					let timeString = getTimeString(e_1.timing.end)
+					r.status = "Unavailable until " + timeString
+					break
+				} else {
+					let timeString = getTimeString(e_1.timing.end)
+					r.status = "Unavailable until " + timeString
+					break
+				}
+			} else if (time < e.timing.start) {
 				let timeString = getTimeString(e.timing.start)
 				r.status = "Available until " + timeString
-				status_set = true
-			} else if (status_set) {
-				return
-			}
-			else {
+				break
+			} else {
 				r.status = "Available for rest of day"
 			}
-		})
+		}
 	})
 	t.sort((a,b) => {
 		return a.rating > b.rating ? -1 : a.rating == b.rating ? 0 : 1

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { RoomRadar } from './radar.js';
 import Table from 'cli-table3';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { getSemesterData } from './update_data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
