@@ -16,11 +16,11 @@ const t = date.getDate();
 const year = date.getFullYear();
 let semester;
 const current_semester = String(year) + ((month >= 1 && month < 5) ? '01' : month >= 5 && month < 8 ? '05' : '08');
-if(existsSync(path.join(__dirname,"/semester.txt"))) {
+if (existsSync(path.join(__dirname,"/semester.txt"))) {
     semester = readFileSync(path.join(__dirname,"/semester.txt"),"utf8")
     if(current_semester != semester || args.includes("--update") || args.includes("-u")) {
         console.log("New semester detected (or update flag given). Updating semester file...");
-        writeFileSync(path.join(__dirname,"/semester.txt"),current_semester,"utf8");
+        writeFileSync(path.join(__dirname,"/semester.txt"), current_semester, "utf8");
         await getSemesterData(current_semester);
     }
 } else {
@@ -71,13 +71,13 @@ if (args.length == 0) {
             queries.push(args[i]);
         }
     }
-    if(!schedule_bool) {
-        for(let query of queries) {
+    if (!schedule_bool) {
+        for (const query of queries) {
             console.log(`Search query ${query}:`);
             displayTable(RoomRadar(query));
         }
     } else {
-        for(let query of queries) {
+        for(const query of queries) {
             console.log(`Search query ${query}:`);
             displayScheduleTable(RoomRadar(query));
         }

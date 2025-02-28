@@ -1,8 +1,7 @@
 import { start } from "repl";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import {default as fsWithCallbacks} from 'fs'
-const fsp = fsWithCallbacks.promises
+import {default as fs} from 'fs'
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,15 +18,13 @@ function formatTime12Hour(timeStr) {
 }
 
 
-export async function formatClassrooms(fname) {
+export async function formatClassrooms(json) {
   try {
     console.log("Parsing semester data...")
-    const rawjson = await fsp.readFile(fname, 'utf-8');
-    const json = JSON.parse(rawjson);
     const classroomSchedule = {}; 
 
-    for (let i = 0; i < json.data.length; i++) {
-      const classData = json.data[i];
+    for (let i = 0; i < json.length; i++) {
+      const classData = json[i];
       const campus = classData.campusDescription;
       const meeting = classData.meetingsFaculty[0].meetingTime;
       const building = meeting.building;
@@ -70,7 +67,7 @@ export async function formatClassrooms(fname) {
         });
       }
     }
-    const rd_rawjson = await JSON.parse(await fsp.readFile(path.join(__dirname,"../data/room_data.json"),'utf-8'));
+    const rd_rawjson = await JSON.parse(await fs.readFileSync(path.join(__dirname,"../data/room_data.json"),'utf-8'));
     let keys = Object.keys(rd_rawjson);
     keys.forEach(key => rd_rawjson[key].schedule = {})
     keys = Object.keys(classroomSchedule);
@@ -79,7 +76,7 @@ export async function formatClassrooms(fname) {
         if(rd_rawjson[key].schedule) rd_rawjson[key].schedule = classroomSchedule[key];
       } 
     })
-    await fsp.writeFile(path.join(__dirname,"../data/room_data.json"),JSON.stringify(rd_rawjson,null,4));
+    fs.writeFileSync(path.join(__dirname,"../data/room_data.json"),JSON.stringify(rd_rawjson,null,4));
     console.log("Semester data parsed!")
     }catch(error) {
         console.error(error)

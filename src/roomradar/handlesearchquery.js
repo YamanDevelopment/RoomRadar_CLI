@@ -56,7 +56,7 @@ const CheckNum = (query, num) => {
     for(let i in query) if(query[i].toUpperCase() != num[i]) return false
     return true
 } 
-const CheckRoom = (query, room) => {
+const CheckRoom = (query, room) => { 
     // Force type compliance
     assert(query.split(" ").length > 1 && query.match(/[0-9]+/));
     assert(room.Building && room.Room)

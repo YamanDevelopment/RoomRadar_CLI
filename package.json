@@ -1,6 +1,6 @@
 {
   "name": "roomradar_cli",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "CLI for RoomRadar. Subproject of UniUtils",
   "main": "roomradar/cli.js",
   "type": "module",
@@ -18,13 +18,16 @@
   },
   "homepage": "https://github.com/YamanDevelopment/RoomRadar_CLI#readme",
   "dependencies": {
-    "@googlemaps/google-maps-services-js": "^3.4.0",
     "cli-progress": "^3.12.0",
     "cli-table3": "^0.6.5",
-    "prompt-sync": "^4.2.0",
-    "puppeteer": "^23.11.1"
+    "http-cookie-agent": "^6.0.8",
+    "https": "^1.0.0",
+    "prompt-sync": "^4.2.0"
   },
   "bin": {
     "roomradar": "./src/roomradar/cli.js"
+  },
+  "exports": {
+    "./roomradar": "./src/roomradar/radar.js"
   }
 }
